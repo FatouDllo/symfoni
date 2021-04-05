@@ -10,6 +10,7 @@ use App\Form\MatiereType;
 use App\Entity\Professeur;
 use App\Form\EtudiantType;
 use App\Form\ProfesseurType;
+use App\Repository\ProfesseurRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,9 +21,14 @@ class GestionEvaluationController extends AbstractController
     /**
      * @Route ("/", name="home")
      */
-    public function home()
+    public function home(ProfesseurRepository $professeurRepository)
     {
-        return $this->render('gestion_evaluation/home.html.twig');
+        $professeurs = $professeurRepository->findAll();
+
+        return $this->render(
+            'gestion_evaluation/home.html.twig',
+            compact('professeurs')
+        );
     }
 
     /**
@@ -114,6 +120,17 @@ class GestionEvaluationController extends AbstractController
         return $this->render(
             'gestion_evaluation/ajouter_note.html.twig',
             ['form' => $form->createView()]
+        );
+    }
+
+    /**
+     * @Route("/professeur/{id}", name = "afficher_professeur")
+     */
+    public function professeur(Professeur $professeur)
+    {
+        return $this->render(
+            'gestion_evaluation/professeur.html.twig',
+            compact('professeur')
         );
     }
 }

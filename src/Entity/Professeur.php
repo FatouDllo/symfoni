@@ -97,4 +97,18 @@ class Professeur
 
         return $this;
     }
+
+    public function moyenne(): float
+    {
+        $sum = 0;
+        foreach ($this->notes as $note) {
+            $sum += $note->getNote();
+        }
+
+        try {
+            return $sum / $this->notes->count();
+        } catch (\Exception $e) {
+            return 0;
+        }
+    }
 }
